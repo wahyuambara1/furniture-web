@@ -21,6 +21,7 @@ export default function ContactPage() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [isMobileLangOpen, setIsMobileLangOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   // MENGAMBIL STATE BAHASA GLOBAL
@@ -29,6 +30,7 @@ export default function ContactPage() {
   const handleLanguageChange = (langCode) => {
     changeLanguage(langCode);
     setIsLangOpen(false);
+    setIsMobileLangOpen(false);
   };
 
   const dropdownRef = useRef(null);
@@ -129,18 +131,21 @@ export default function ContactPage() {
               <Link href="/contact" className={`${pathname === "/contact" ? "text-[#9F6301]" : "hover:text-white"} transition`} onClick={() => setIsMobileMenuOpen(false)}>{t.menu.contact}</Link>
               <a href={waLink} className="bg-[#C89B3C] text-white text-center py-2 my-2 rounded hover:bg-yellow-700 transition uppercase">{t.menu.order}</a>
               <div>
-                <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-1.5 leading-none font-bold w-full text-left">
-                  {locale.toUpperCase()} {isLangOpen ? <FaChevronUp className="text-[10px]" /> : <FaChevronDown className="text-[10px]" />}
+                {/* 1. Ganti menjadi setIsMobileLangOpen dan isMobileLangOpen */}
+                <button onClick={() => setIsMobileLangOpen(!isMobileLangOpen)} className="flex items-center gap-1.5 leading-none font-bold w-full text-left">
+                  {locale.toUpperCase()} {isMobileLangOpen ? <FaChevronUp className="text-[10px]" /> : <FaChevronDown className="text-[10px]" />}
                 </button>
-                {isLangOpen && (
+                
+                {/* 2. Ganti isLangOpen menjadi isMobileLangOpen */}
+                {isMobileLangOpen && (
                   <div className="flex flex-col gap-3 mt-3 pl-2 text-base font-medium font-sans text-gray-800">
-                     {languages.map((lang) => (
-  <button 
-    key={lang.code} 
-    onClick={() => handleLanguageChange(lang.code)} 
-    className={`text-left px-2 py-1 hover:bg-[#C89B3C] hover:text-white rounded transition text-sm ${locale === lang.code ? "bg-[#C89B3C] text-white font-bold" : ""}`}
-  >
-    {lang.label}
+                    {languages.map((lang) => (
+                      <button 
+                        key={lang.code} 
+                        onClick={() => handleLanguageChange(lang.code)} 
+                        className={`text-left hover:text-white transition ${locale === lang.code ? "text-white font-bold" : ""}`}
+                      >
+                        {lang.label}
                       </button>
                     ))}
                   </div>
