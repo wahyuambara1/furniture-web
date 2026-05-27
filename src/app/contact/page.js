@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef  } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChevronUp, FaChevronDown, FaMapMarkerAlt } from "react-icons/fa";
@@ -31,6 +31,22 @@ export default function ContactPage() {
     setIsLangOpen(false);
   };
 
+  const dropdownRef = useRef(null);
+
+  // Terjemahan Tagline Baru
+  const footerTagline = locale === 'id' ? "Di mana kenyamanan bertemu keanggunan." : locale === 'fr' ? "Où le confort rencontre l'élégance." : "Where comfort meets elegance.";
+
+  // Logika untuk menutup dropdown saat klik di luar
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsLangOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   // Link Tujuan
   const waLink = "https://wa.me/6288888888888";
   const igLink = "https://instagram.com/balifurniture";
@@ -49,42 +65,55 @@ export default function ContactPage() {
     <div className="font-sans text-gray-800 bg-[#FAF8F5] relative w-full max-w-[100vw] overflow-x-hidden min-h-screen flex flex-col">
       
       {/* HEADER */}
-      <header className="sticky top-0 z-50 bg-[#E5C37A] px-6 py-4 flex justify-between items-center shadow-md">
-        <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="Bali Furniture Logo" className="w-10 h-10 object-contain" />
-          <Link href="/" className="font-bold text-xl uppercase tracking-wider leading-[1.2] hover:opacity-70 transition cursor-pointer">
-            Bali<br/>Furniture
-          </Link>
-        </div>
+      <header className="sticky top-0 z-50 bg-[#E5C37A] px-6 lg:px-20 py-4 flex justify-between items-center shadow-md">
+        <Link href="/" className="flex items-center gap-2 lg:gap-3 hover:opacity-70 transition cursor-pointer">
+          <img src="/logo.png" alt="Bali Furniture Logo" className="w-10 h-10 lg:w-11 lg:h-11 object-contain" />
+          <span className="lg:hidden font-extrabold text-xl uppercase tracking-wider leading-[1.2] text-gray-900">
+            Bali<br />Furniture
+          </span>
+          <span className="hidden lg:block font-extrabold text-xl uppercase tracking-widest text-gray-900 mt-0.5">
+            BALI FURNITURE
+          </span>
+        </Link>
 
+        {/* Desktop Menu */}
         <nav className="hidden lg:flex items-center gap-8 font-semibold relative">
           <Link href="/" className={`${pathname === "/" ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.home}</Link>
-          <Link href="/furniture" className={`${pathname.includes("/furniture") ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.furniture}</Link>
-          <Link href="/articles" className={`${pathname.includes("/articles") ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.articles}</Link>
+          <Link href="/furniture" className={`${pathname.startsWith("/furniture") ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.furniture}</Link>
+          <Link href="/articles" className={`${pathname.startsWith("/articles") ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.articles}</Link>
           <Link href="/contact" className={`${pathname === "/contact" ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.contact}</Link>
-          <a href={waLink} target="_blank" rel="noreferrer" className="bg-[#C89B3C] text-white px-6 py-2 rounded shadow hover:bg-yellow-700 transition">{t.menu.order}</a>
           
-          <div className="relative">
-            <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-1.5 leading-none hover:text-white transition cursor-pointer">
-              {locale.toUpperCase()} {isLangOpen ? <FaChevronUp className="text-[10px]" /> : <FaChevronDown className="text-[10px]" />}
+          <a href={waLink} target="_blank" rel="noreferrer" className="bg-[#C89B3C] text-white px-6 py-2 rounded shadow hover:bg-yellow-700 transition">
+            {t.menu.order}
+          </a>
+          
+          {/* Wadah Dropdown Language */}
+          <div className="relative" ref={dropdownRef}>
+            <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-1 hover:text-white transition cursor-pointer font-bold">
+              <span className="flex items-center gap-1.5 leading-none">
+                {locale.toUpperCase()} {isLangOpen ? <FaChevronUp className="text-[10px]" /> : <FaChevronDown className="text-[10px]" />}
+              </span>
             </button>
+            
             {isLangOpen && (
-              <div className="absolute top-full right-0 mt-2 w-32 bg-[#E5C37A] rounded shadow-lg p-2 flex flex-col gap-2 z-50">
+              <div className="absolute top-full right-0 mt-6 w-32 bg-[#E5C37A] rounded shadow-lg p-2 flex flex-col gap-2 z-50">
                 {languages.map((lang) => (
-  <button 
-    key={lang.code} 
-    onClick={() => handleLanguageChange(lang.code)} 
-    className={`text-left px-2 py-1 hover:bg-[#C89B3C] hover:text-white rounded transition text-sm ${locale === lang.code ? "bg-[#C89B3C] text-white font-bold" : ""}`}
-  >
-    {lang.label}
-  </button>
-))}
+                  <button 
+                    key={lang.code} 
+                    onClick={() => handleLanguageChange(lang.code)} 
+                    className={`text-left px-2 py-1 rounded transition text-sm ${locale === lang.code ? "bg-[#C89B3C] text-white font-bold" : "hover:bg-[#C89B3C] hover:text-white"}`}
+                  >
+                    {lang.label}
+                  </button>
+                ))}
               </div>
             )}
           </div>
         </nav>
 
-        <button className="lg:hidden text-3xl" onClick={() => setIsMobileMenuOpen(true)}><MdMenu /></button>
+        <button className="lg:hidden text-3xl" onClick={() => setIsMobileMenuOpen(true)}>
+          <MdMenu />
+        </button>
       </header>
 
       {/* MOBILE MENU OVERLAY */}
@@ -127,20 +156,26 @@ export default function ContactPage() {
         <Link href="/" className="text-gray-500 hover:text-[#C89B3C] font-bold text-m mb-5 inline-flex items-center transition relative z-20">
           {t.detail.back}
         </Link>
-        <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-2">{t.menu.contact}</h1>
+        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-1 capitalize">
+          {t.menu.contact.toLowerCase()}
+        </h1>
         <p className="text-gray-500 font-medium mb-10 text-sm lg:text-base leading-relaxed">
           {locale === 'id' ? "Punya pertanyaan? Kami selalu siap membantu Anda" : locale === 'fr' ? "Vous avez des questions ? Nous sommes toujours prêts à vous aider" : "Got questions? We're always ready to help and guide you"}
         </p>
 
         {/* Map & Address Section */}
         <div className="mb-12 flex flex-col gap-4">
-          <div className="flex items-start gap-2">
-            <FaMapMarkerAlt className="text-[#C89B3C] text-xl mt-1 flex-shrink-0" />
-            <p className="text-sm lg:text-base font-medium leading-relaxed text-gray-800">
-              Jl. Raya Padonan No.5, Tibubeneng, Kec. Kuta<br className="hidden lg:block" />
-              Utara, Kabupaten Badung, Bali 80361
-            </p>
-          </div>
+          <div className="flex items-start gap-4">
+              <div className="text-[#C89B3C] mt-1">
+                <FaMapMarkerAlt size={24} />
+              </div>
+              {/* Gunakan flex-1 agar teks mengambil seluruh sisa ruang yang ada dan turun baris secara alami */}
+              <div className="flex-1">
+                <p className="text-base lg:text-lg text-gray-700 leading-relaxed font-medium">
+                  Jl. Raya Padonan No.5, Tibubeneng, Kec. Kuta Utara, Kabupaten Badung, Bali 80361
+                </p>
+              </div>
+            </div>
           
           <section className="px-[0.1] lg:px-2 py-1 bg-[#FAF8F5]">
             <div className="w-full h-64 lg:h-96 rounded-2xl overflow-hidden shadow-lg border-4 border-white">
@@ -193,18 +228,51 @@ export default function ContactPage() {
       </main>
 
       {/* FOOTER */}
-      <footer className="bg-[#EAE1CA] px-6 lg:px-20 py-7 flex flex-row justify-between gap-4 text-gray-900 mt-auto">
-        <div className="flex flex-col gap-2 w-[55%]">
-          <h2 className="font-extrabold text-xl lg:text-3xl">Bali Furniture</h2>
-          <p className="text-xs lg:text-base mb-2 font-medium">The greatest bDKF SK</p>
-          <h4 className="font-extrabold text-sm lg:text-lg">{t.detail.address}</h4>
-          <p className="text-xs lg:text-base leading-relaxed font-medium pr-2">Jl. Raya Padonan No.5,<br />Tibubeneng, Kec. Kuta Utara,<br />Kabupaten Badung, Bali 80361</p>
-        </div>
-        <div className="flex flex-col gap-3 justify-center w-[45%] pl-2 lg:pl-10">
-          <a href={webLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:opacity-70 transition"><img src="/internet.png" alt="Website" className="w-5 h-5 lg:w-8 lg:h-8 object-contain" /><span className="text-[10px] sm:text-xs lg:text-lg font-medium break-all">balifurniture.com</span></a>
-          <a href={igLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:opacity-70 transition"><img src="/instagram.png" alt="Instagram" className="w-5 h-5 lg:w-8 lg:h-8 object-contain" /><span className="text-[10px] sm:text-xs lg:text-lg font-medium">balifurniture</span></a>
-          <a href={waLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:opacity-70 transition"><img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 lg:w-8 lg:h-8 object-contain" /><span className="text-[10px] sm:text-xs lg:text-lg font-medium">+62 888 8888 8888</span></a>
-          <a href={emailLink} className="flex items-center gap-2 hover:opacity-70 transition"><img src="/mail.png" alt="Email" className="w-5 h-5 lg:w-8 lg:h-8 object-contain" /><span className="text-[10px] sm:text-xs lg:text-lg font-medium break-all">balifurniture@gmail.com</span></a>
+      <footer className="bg-[#EAE1CA] px-6 lg:px-20 py-12 mt-auto">
+        {/* Menggunakan gap-10 agar jarak antar kolom sama besar dan lega */}
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-10 lg:gap-12 w-full">
+          
+          {/* Kolom 1: Brand & Tagline */}
+          <div className="flex flex-col gap-3">
+            <h2 className="font-extrabold text-2xl lg:text-3xl text-gray-900">Bali Furniture</h2>
+            <p className="text-sm lg:text-base font-medium text-gray-800 leading-relaxed">
+              {footerTagline}
+            </p>
+          </div>
+
+          {/* Kolom 2: Translated Address */}
+          <div className="flex flex-col gap-3">
+            <h4 className="font-extrabold text-lg text-gray-900">{t.detail.address}</h4>
+            <p className="text-sm lg:text-base leading-relaxed font-medium text-gray-800">
+              Jl. Raya Padonan No.5, Tibubeneng, Kec. Kuta Utara, Kabupaten Badung, Bali 80361
+            </p>
+          </div>
+
+          {/* Kolom 3: Web & IG */}
+          <div className="flex flex-col gap-4">
+            <a href="#" className="flex items-center gap-3 hover:opacity-70 transition">
+              <img src="/internet.png" alt="Website" className="w-6 h-6 object-contain flex-shrink-0" />
+              <span className="text-sm lg:text-base font-medium text-gray-900">balifurniture.com</span>
+            </a>
+            <a href="#" className="flex items-center gap-3 hover:opacity-70 transition">
+              <img src="/instagram.png" alt="Instagram" className="w-6 h-6 object-contain flex-shrink-0" />
+              <span className="text-sm lg:text-base font-medium text-gray-900">balifurniture</span>
+            </a>
+          </div>
+
+          {/* Kolom 4: WA & Email */}
+          <div className="flex flex-col gap-4">
+            <a href={waLink} target="_blank" rel="noreferrer" className="flex items-center gap-3 hover:opacity-70 transition">
+              <img src="/whatsapp.png" alt="WhatsApp" className="w-6 h-6 object-contain flex-shrink-0" />
+              <span className="text-sm lg:text-base font-medium text-gray-900">+62 888 8888 8888</span>
+            </a>
+            <a href="mailto:balifurniture@gmail.com" className="flex items-center gap-3 hover:opacity-70 transition">
+              <img src="/mail.png" alt="Email" className="w-6 h-6 object-contain flex-shrink-0" />
+              {/* break-all memastikan email panjang tidak merusak grid */}
+              <span className="text-sm lg:text-base font-medium text-gray-900 break-all">balifurniture@gmail.com</span>
+            </a>
+          </div>
+
         </div>
       </footer>
 

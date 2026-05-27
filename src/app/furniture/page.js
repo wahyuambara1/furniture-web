@@ -1,7 +1,7 @@
 "use client";
 
 import { productsData } from "@/data/products";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChevronUp, FaChevronDown, FaSearch } from "react-icons/fa";
@@ -47,6 +47,22 @@ export default function FurniturePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const dropdownRef = useRef(null);
+
+  // Terjemahan Tagline Baru
+  const footerTagline = locale === 'id' ? "Di mana kenyamanan bertemu keanggunan." : locale === 'fr' ? "Où le confort rencontre l'élégance." : "Where comfort meets elegance.";
+
+  // Logika untuk menutup dropdown saat klik di luar
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsLangOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const handleLanguageChange = (langCode) => {
@@ -61,46 +77,52 @@ export default function FurniturePage() {
     <div className="font-sans text-gray-800 bg-[#FAF8F5] relative w-full max-w-[100vw] overflow-x-hidden min-h-screen flex flex-col">
       
       {/* HEADER */}
-      <header className="sticky top-0 z-50 bg-[#E5C37A] px-6 py-4 flex justify-between items-center shadow-md">
-        <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="Bali Furniture Logo" className="w-10 h-10 object-contain" />
-          <Link href="/" className="font-bold text-xl uppercase tracking-wider leading-[1.2] hover:opacity-70 transition cursor-pointer">
-            Bali<br/>Furniture
-          </Link>
-        </div>
+      <header className="sticky top-0 z-50 bg-[#E5C37A] px-6 lg:px-20 py-4 flex justify-between items-center shadow-md">
+        <Link href="/" className="flex items-center gap-2 lg:gap-3 hover:opacity-70 transition cursor-pointer">
+          <img src="/logo.png" alt="Bali Furniture Logo" className="w-10 h-10 lg:w-11 lg:h-11 object-contain" />
+          <span className="lg:hidden font-extrabold text-xl uppercase tracking-wider leading-[1.2] text-gray-900">
+            Bali<br />Furniture
+          </span>
+          <span className="hidden lg:block font-extrabold text-xl uppercase tracking-widest text-gray-900 mt-0.5">
+            BALI FURNITURE
+          </span>
+        </Link>
 
         {/* Desktop Menu */}
         <nav className="hidden lg:flex items-center gap-8 font-semibold relative">
           <Link href="/" className={`${pathname === "/" ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.home}</Link>
-          <Link href="/furniture" className={`${pathname === "/furniture" ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.furniture}</Link>
-          <Link href="/articles" className={`${pathname === "/articles" ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.articles}</Link>
+          <Link href="/furniture" className={`${pathname.startsWith("/furniture") ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.furniture}</Link>
+          <Link href="/articles" className={`${pathname.startsWith("/articles") ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.articles}</Link>
           <Link href="/contact" className={`${pathname === "/contact" ? "text-[#9F6301]" : "hover:text-white"} transition`}>{t.menu.contact}</Link>
           
           <a href={waLink} target="_blank" rel="noreferrer" className="bg-[#C89B3C] text-white px-6 py-2 rounded shadow hover:bg-yellow-700 transition">
             {t.menu.order}
           </a>
           
-          <div className="relative">
-            <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-1.5 leading-none hover:text-white transition cursor-pointer font-bold">
-              {locale.toUpperCase()} {isLangOpen ? <FaChevronUp className="text-[10px]" /> : <FaChevronDown className="text-[10px]" />}
+          {/* Wadah Dropdown Language */}
+          <div className="relative" ref={dropdownRef}>
+            <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-1 hover:text-white transition cursor-pointer font-bold">
+              <span className="flex items-center gap-1.5 leading-none">
+                {locale.toUpperCase()} {isLangOpen ? <FaChevronUp className="text-[10px]" /> : <FaChevronDown className="text-[10px]" />}
+              </span>
             </button>
+            
             {isLangOpen && (
-              <div className="absolute top-full right-0 mt-2 w-32 bg-[#E5C37A] rounded shadow-lg p-2 flex flex-col gap-2 z-50">
+              <div className="absolute top-full right-0 mt-6 w-32 bg-[#E5C37A] rounded shadow-lg p-2 flex flex-col gap-2 z-50">
                 {languages.map((lang) => (
-  <button 
-    key={lang.code} 
-    onClick={() => handleLanguageChange(lang.code)} 
-    className={`text-left px-2 py-1 hover:bg-[#C89B3C] hover:text-white rounded transition text-sm ${locale === lang.code ? "bg-[#C89B3C] text-white font-bold" : ""}`}
-  >
-    {lang.label}
-  </button>
-))}
+                  <button 
+                    key={lang.code} 
+                    onClick={() => handleLanguageChange(lang.code)} 
+                    className={`text-left px-2 py-1 rounded transition text-sm ${locale === lang.code ? "bg-[#C89B3C] text-white font-bold" : "hover:bg-[#C89B3C] hover:text-white"}`}
+                  >
+                    {lang.label}
+                  </button>
+                ))}
               </div>
             )}
           </div>
         </nav>
 
-        {/* Mobile Hamburger Icon */}
         <button className="lg:hidden text-3xl" onClick={() => setIsMobileMenuOpen(true)}>
           <MdMenu />
         </button>
@@ -146,18 +168,23 @@ export default function FurniturePage() {
       )}
 
       {/* MAIN CONTENT AREA */}
-      <main className="flex-grow pb-2">
-        {/* Tombol Back */}
-                <Link href="/" className="text-gray-500 hover:text-[#C89B3C] font-bold text-m mt-5 ml-6 inline-flex items-center transition relative z-20">
-                 {t.detail.back}
-                </Link>
-        {/* SEARCH BAR SECTION */}
-        <div className="pt-7 px-6 max-w-3xl mx-auto">
-          <div className="relative w-full shadow-sm rounded-xl">
+      {/* MAIN CONTENT AREA */}
+      <main className="flex-grow pb-10">
+        
+        {/* WADAH PEMBUNGKUS (Menggunakan padding yang sama dengan grid produk) */}
+        <div className="pt-7 px-6 lg:px-20 w-full flex flex-col items-start">
+          
+          {/* Tombol Back */}
+          <Link href="/" className="text-gray-500 hover:text-[#C89B3C] font-bold text-base mb-4 inline-flex items-center transition relative z-20">
+            {t.detail.back}
+          </Link>
+
+          {/* SEARCH BAR SECTION (Lebar 50% di Desktop, 100% di Mobile) */}
+          <div className="relative w-full lg:w-1/2 shadow-sm rounded-xl">
             <input
               type="text"
               placeholder={searchPlaceholder}
-              className="w-full border-[1.5px] border-gray-300 rounded-xl py-4 px-6 pr-12 focus:outline-none focus:border-[#C89B3C] transition font-medium text-gray-700 bg-white"
+              className="w-full border-[1.5px] border-gray-300 rounded-xl py-3.5 px-6 pr-12 focus:outline-none focus:border-[#C89B3C] transition font-medium text-gray-700 bg-white"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -166,12 +193,14 @@ export default function FurniturePage() {
           
           {/* Teks Hasil Pencarian */}
           {searchQuery && (
-            <p className="text-center mt-4 font-bold text-lg text-gray-800">
+            <p className="mt-4 font-bold text-lg text-gray-800 text-left">
               {locale === 'id' ? "Hasil pencarian untuk " : locale === 'fr' ? "Résultat de la recherche pour " : "Search result for "}
               <span className="text-[#C89B3C]">{searchQuery}</span>
             </p>
           )}
         </div>
+
+        {/* GRID PRODUK ... (kode grid Anda tetap sama) */}
 
         {/* FURNITURE GRID SECTION */}
         <section className="px-6 lg:px-20 py-5">
@@ -218,34 +247,62 @@ export default function FurniturePage() {
       </main>
 
       {/* FOOTER */}
-      <footer className="bg-[#EAE1CA] px-6 lg:px-20 py-6 flex flex-row justify-between gap-4 text-gray-900 mt-auto">
-        <div className="flex flex-col gap-2 w-[55%]">
-          <h2 className="font-extrabold text-xl lg:text-3xl">Bali Furniture</h2>
-          <p className="text-xs lg:text-base mb-2 font-medium">{t.sections.footerTag}</p>
-          <h4 className="font-extrabold text-sm lg:text-lg">Address</h4>
-          <p className="text-xs lg:text-base leading-relaxed font-medium pr-2">
-            Jl. Raya Padonan No.5,<br />
-            Tibubeneng, Kec. Kuta Utara,<br />
-            Kabupaten Badung, Bali 80361
-          </p>
-        </div>
-        <div className="flex flex-col gap-3 justify-center w-[45%] pl-2 lg:pl-10">
-          <a href="#" className="flex items-center gap-2 hover:opacity-70 transition">
-            <img src="/internet.png" alt="Website" className="w-5 h-5 lg:w-8 lg:h-8 object-contain" />
-            <span className="text-[10px] sm:text-xs lg:text-lg font-medium break-all">balifurniture.com</span>
-          </a>
-          <a href="#" className="flex items-center gap-2 hover:opacity-70 transition">
-            <img src="/instagram.png" alt="Instagram" className="w-5 h-5 lg:w-8 lg:h-8 object-contain" />
-            <span className="text-[10px] sm:text-xs lg:text-lg font-medium">balifurniture</span>
-          </a>
-          <a href={waLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:opacity-70 transition">
-            <img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 lg:w-8 lg:h-8 object-contain" />
-            <span className="text-[10px] sm:text-xs lg:text-lg font-medium">+62 888 8888 8888</span>
-          </a>
-          <a href="mailto:balifurniture@gmail.com" className="flex items-center gap-2 hover:opacity-70 transition">
-            <img src="/mail.png" alt="Email" className="w-5 h-5 lg:w-8 lg:h-8 object-contain" />
-            <span className="text-[10px] sm:text-xs lg:text-lg font-medium break-all">balifurniture@gmail.com</span>
-          </a>
+      <footer className="bg-[#EAE1CA] px-6 lg:px-20 py-8 lg:py-12 mt-auto">
+        
+        {/* Container Utama: Flex Row untuk Mobile, Grid 4 Kolom untuk Desktop */}
+        <div className="flex flex-row justify-between lg:grid lg:grid-cols-4 gap-4 lg:gap-12 w-full max-w-7xl mx-auto">
+          
+          {/* WADAH KIRI (Mobile) - Membungkus Brand dan Alamat */}
+          {/* lg:contents akan membuat wadah ini transparan di Desktop sehingga anak-anaknya langsung masuk ke Grid */}
+          <div className="flex flex-col gap-6 w-[55%] lg:w-auto lg:contents">
+            
+            {/* Kolom 1: Brand & Tagline */}
+            <div className="flex flex-col gap-1.5 lg:gap-3">
+              <h2 className="font-extrabold text-xl lg:text-3xl text-gray-900">Bali Furniture</h2>
+              <p className="text-xs lg:text-base font-medium text-gray-800 leading-relaxed">
+                {footerTagline}
+              </p>
+            </div>
+
+            {/* Kolom 2: Address */}
+            <div className="flex flex-col gap-1.5 lg:gap-3">
+              <h4 className="font-extrabold text-sm lg:text-lg text-gray-900">{t.detail.address}</h4>
+              <p className="text-xs lg:text-base leading-relaxed font-medium text-gray-800 pr-2 lg:pr-0">
+                Jl. Raya Padonan No.5, Tibubeneng, Kec. Kuta Utara, Kabupaten Badung, Bali 80361
+              </p>
+            </div>
+
+          </div>
+
+          {/* WADAH KANAN (Mobile) - Membungkus Sosial Media dan Kontak */}
+          <div className="flex flex-col gap-4 justify-center w-[45%] pl-2 lg:pl-0 lg:w-auto lg:contents">
+            
+            {/* Kolom 3: Web & IG */}
+            <div className="flex flex-col gap-3 lg:gap-4">
+              <a href="#" className="flex items-center gap-2 lg:gap-3 hover:opacity-70 transition">
+                <img src="/internet.png" alt="Website" className="w-5 h-5 lg:w-6 lg:h-6 object-contain flex-shrink-0" />
+                <span className="text-[10px] sm:text-xs lg:text-base font-medium text-gray-900">balifurniture.com</span>
+              </a>
+              <a href="#" className="flex items-center gap-2 lg:gap-3 hover:opacity-70 transition">
+                <img src="/instagram.png" alt="Instagram" className="w-5 h-5 lg:w-6 lg:h-6 object-contain flex-shrink-0" />
+                <span className="text-[10px] sm:text-xs lg:text-base font-medium text-gray-900">balifurniture</span>
+              </a>
+            </div>
+
+            {/* Kolom 4: WA & Email */}
+            <div className="flex flex-col gap-3 lg:gap-4">
+              <a href={waLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 lg:gap-3 hover:opacity-70 transition">
+                <img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 lg:w-6 lg:h-6 object-contain flex-shrink-0" />
+                <span className="text-[10px] sm:text-xs lg:text-base font-medium text-gray-900">+62 888 8888 8888</span>
+              </a>
+              <a href="mailto:balifurniture@gmail.com" className="flex items-center gap-2 lg:gap-3 hover:opacity-70 transition">
+                <img src="/mail.png" alt="Email" className="w-5 h-5 lg:w-6 lg:h-6 object-contain flex-shrink-0" />
+                <span className="text-[10px] sm:text-xs lg:text-base font-medium text-gray-900 break-all">balifurniture@gmail.com</span>
+              </a>
+            </div>
+
+          </div>
+
         </div>
       </footer>
 

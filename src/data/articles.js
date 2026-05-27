@@ -100,5 +100,61 @@ export const articlesData = [
       <br/>
       <p><b>Conseils d'entretien :</b> Nettoyez régulièrement les fentes tissées à l'aide d'une brosse douce ou d'un petit aspirateur. S'il est exposé à l'eau de pluie, assurez-vous de le sécher immédiatement au soleil ou de l'essuyer jusqu'à ce qu'il soit complètement sec pour éviter la moisissure.</p>
     `
+  },
+  {
+    id: 4,
+    slug: "how-to-maintain-your-rattan-furniture-to-last-longer",
+    date: "15 Mei 2026",
+    author: "Tim Bali Furniture",
+    image: "/articles/article2/article-2.jpg",
+    title_en: "Why and How to Maintain Your Rattan Furniture to Last Longer",
+    title_id: "Cara Merawat Furnitur Rotan Anda Agar Lebih Awet",
+    title_fr: "Comment entretenir vos meubles en rotin pour qu'ils durent plus longtemps",
+    desc_en: "Rattan is beautiful but needs proper care. Learn how to clean and maintain your rattan furniture easily.",
+    desc_id: "Rotan itu indah namun butuh perawatan yang tepat. Pelajari cara membersihkan dan merawat furnitur rotan Anda dengan mudah.",
+    desc_fr: "Le rotin est beau mais nécessite des soins appropriés. Apprenez comment nettoyer et entretenir facilement vos meubles en rotin.",
+    content_en: `
+      <p>Rattan is a beautiful and lightweight material, but it needs special attention so that it doesn't easily become brittle or moldy, especially in tropical climates.</p>
+      <br/>
+      <p><b>Maintenance Tips:</b> Clean the woven crevices using a soft brush or a small vacuum cleaner regularly. If exposed to rainwater, make sure it is immediately dried in the sun or wiped until completely dry to avoid mold.</p>
+    `,
+    content_id: `
+      <p>Rotan adalah material yang indah dan ringan, namun butuh perhatian khusus agar tidak mudah rapuh atau berjamur, terutama di iklim tropis.</p>
+      <br/>
+      <p><b>Tips Perawatan:</b> Bersihkan sela-sela anyaman menggunakan kuas lembut atau penyedot debu kecil secara rutin. Jika terkena air hujan, pastikan segera dijemur atau dilap hingga benar-benar kering untuk menghindari jamur.</p>
+    `,
+    content_fr: `
+      <p>Le rotin est un matériau beau et léger, mais il nécessite une attention particulière pour ne pas devenir facilement cassant ou moisi, surtout sous les climats tropicaux.</p>
+      <br/>
+      <p><b>Conseils d'entretien :</b> Nettoyez régulièrement les fentes tissées à l'aide d'une brosse douce ou d'un petit aspirateur. S'il est exposé à l'eau de pluie, assurez-vous de le sécher immédiatement au soleil ou de l'essuyer jusqu'à ce qu'il soit complètement sec pour éviter la moisissure.</p>
+    `
+  },
+  {
+    id: 5,
+    slug: "how-to-maintain-your-rattan-furniture-to-last-longer",
+    date: "15 Mei 2026",
+    author: "Tim Bali Furniture",
+    image: "/articles/article2/article-2.jpg",
+    title_en: "What, Why, and How to Maintain Your Rattan Furniture to Last Longer",
+    title_id: "Cara Merawat Furnitur Rotan Anda Agar Lebih Awet",
+    title_fr: "Comment entretenir vos meubles en rotin pour qu'ils durent plus longtemps",
+    desc_en: "Rattan is beautiful but needs proper care. Learn how to clean and maintain your rattan furniture easily.",
+    desc_id: "Rotan itu indah namun butuh perawatan yang tepat. Pelajari cara membersihkan dan merawat furnitur rotan Anda dengan mudah.",
+    desc_fr: "Le rotin est beau mais nécessite des soins appropriés. Apprenez comment nettoyer et entretenir facilement vos meubles en rotin.",
+    content_en: `
+      <p>Rattan is a beautiful and lightweight material, but it needs special attention so that it doesn't easily become brittle or moldy, especially in tropical climates.</p>
+      <br/>
+      <p><b>Maintenance Tips:</b> Clean the woven crevices using a soft brush or a small vacuum cleaner regularly. If exposed to rainwater, make sure it is immediately dried in the sun or wiped until completely dry to avoid mold.</p>
+    `,
+    content_id: `
+      <p>Rotan adalah material yang indah dan ringan, namun butuh perhatian khusus agar tidak mudah rapuh atau berjamur, terutama di iklim tropis.</p>
+      <br/>
+      <p><b>Tips Perawatan:</b> Bersihkan sela-sela anyaman menggunakan kuas lembut atau penyedot debu kecil secara rutin. Jika terkena air hujan, pastikan segera dijemur atau dilap hingga benar-benar kering untuk menghindari jamur.</p>
+    `,
+    content_fr: `
+      <p>Le rotin est un matériau beau et léger, mais il nécessite une attention particulière pour ne pas devenir facilement cassant ou moisi, surtout sous les climats tropicaux.</p>
+      <br/>
+      <p><b>Conseils d'entretien :</b> Nettoyez régulièrement les fentes tissées à l'aide d'une brosse douce ou d'un petit aspirateur. S'il est exposé à l'eau de pluie, assurez-vous de le sécher immédiatement au soleil ou de l'essuyer jusqu'à ce qu'il soit complètement sec pour éviter la moisissure.</p>
+    `
   }
 ];

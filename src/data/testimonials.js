@@ -25,5 +25,14 @@ text_fr: "J'ai commandé une table à manger en bois massif et un ensemble de ch
     text_en: "The Rattan Chair I bought is not only visually stunning but also incredibly comfortable. It perfectly complements my patio design. Shipping was remarkably fast, and the careful packaging ensured everything arrived in pristine condition.",
 text_id: "Kursi rotan yang saya beli tidak hanya menakjubkan secara visual tetapi juga sangat nyaman. Kursi ini sangat cocok dengan desain teras saya. Pengiriman sangat cepat, dan pengemasan yang cermat memastikan semuanya tiba dalam kondisi sempurna.",
 text_fr: "Le fauteuil en rotin que j'ai acheté est non seulement magnifique, mais aussi incroyablement confortable. Il s'intègre parfaitement à l'aménagement de ma terrasse. La livraison a été très rapide et l'emballage soigné a permis que tout soit arrivé en parfait état."
+  },
+  {
+    id: 4,
+    name: "Jofrey",
+    date: "11-04-2026",
+    image: "/testimonials/avatar3.png",
+    text_en: "The Rattan Chair I bought is not only visually stunning but also incredibly comfortable. It perfectly complements my patio design. Shipping was remarkably fast, and the careful packaging ensured everything arrived in pristine condition.",
+text_id: "Kursi rotan yang saya beli tidak hanya menakjubkan secara visual tetapi juga sangat nyaman. Kursi ini sangat cocok dengan desain teras saya. Pengiriman sangat cepat, dan pengemasan yang cermat memastikan semuanya tiba dalam kondisi sempurna.",
+text_fr: "Le fauteuil en rotin que j'ai acheté est non seulement magnifique, mais aussi incroyablement confortable. Il s'intègre parfaitement à l'aménagement de ma terrasse. La livraison a été très rapide et l'emballage soigné a permis que tout soit arrivé en parfait état."
   }
 ];
